@@ -1,27 +1,48 @@
-jquery-readingstats
-===================
+===========================
+jQuery reading stats plugin
+===========================
 
-v0.1 of jQuery readingstats plugin.
+jQuery reading stats plugin, v1.0
+
+Use it to calculate and display time to read a piece of text,
+eg a blog post.
+
 
 How to use it?
 ==============
 
-$('#my-content').readingstats(); // returns an object with word count, secondsToRead value and format functions to display results.
-readingstats plugin accepts an optional argument to change:
+There are two arguments and both are optional. The first is options object
+with which you can customize reading speed (in words per minute) and
+formatter funtion to display the result.
 
-* readingSpeed, default value is 200 words per minute
-* format, formatter function that takes a number (of seconds) and returns a string like 2 min 45 sec
+* *readingSpeed*, default value is 200 words per minute
+* *format*, formatter function that takes a number (of seconds)
+  and returns a string like 2 min 45 sec
 
-So...
+There are two ways to call it. First is to get
+result directly, like this:
 
-    var rs = $('body').readingstats({readingSpeed: 100, format: function (x) {return x.toString() + ' sec';} } );
+    var rs = $('#my-content').readingStats({
+        readingSpeed: 100,
+        format: function (x) {return x.toString() + ' sec';}
+    });
+
     console.log(rs.wordCount); // word count
-    console.log(rs.secondsToRead); // number of seconds required to read the whole page
-    console.log(rs.format()); // displays formatted output
+    console.log(rs.secondsToRead); // number of seconds
+    console.log(rs.format()); // formatted output
+
+If you want to do something else with selector, you can specify
+callback function as second argument and chain whatever
+jQuery methods after it.
+
+    $('#my-content').readingStats({readingSpeed: 240}, function (stats) {
+            console.log(stats);
+            // do something with stats object
+        }
+    ).fadeOut().fadeIn();
 
 
 Licence
 =======
 
-jquery-readingstats is MIT licensed.
-
+The code is MIT licensed.
