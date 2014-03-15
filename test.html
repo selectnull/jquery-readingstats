@@ -7,9 +7,7 @@
 </head>
 <body>
     <div id="qunit"></div>
-    <div id="qunit-fixture"></div>
-
-    <div class="fixtures">
+    <div id="qunit-fixture">
         <p id="para1">Lorem maxime soluta nulla corporis est fugit? Dolor explicabo assumenda commodi alias rerum! Reprehenderit earum neque amet incidunt facere sit totam. Perspiciatis odit autem temporibus officiis eum asperiores? Illum est.</p>
 
         <p id="para2">
@@ -21,7 +19,7 @@ Sit deleniti eos ipsam sit reiciendis dolores quam explicabo illo in soluta! Ist
     <script src="jquery.readingstats.js"></script>
     <script src="http://code.jquery.com/qunit/qunit-1.14.0.js"></script>
     <script>
-        test("readingStats", function () {
+        test("readingStats returns an intrinsic value", function () {
             var rs1 = $('#para1').readingStats();
             ok(rs1.wordCount === 30, "wordCount passed.");
             ok(rs1.secondsToRead === 9, "secondsToRead passed.");
@@ -29,7 +27,7 @@ Sit deleniti eos ipsam sit reiciendis dolores quam explicabo illo in soluta! Ist
             var rs2 = $('#para2').readingStats({readingSpeed: 20});
             ok(rs2.secondsToRead === 180, "secondsToRead passed.");
 
-            var fix = $('.fixtures').readingStats({
+            var fix = $('#qunit-fixture').readingStats({
                 readingSpeed: 20,
                 format: function (secs) {
                     return secs.toString();
@@ -37,6 +35,17 @@ Sit deleniti eos ipsam sit reiciendis dolores quam explicabo illo in soluta! Ist
             ok(fix.wordCount === 90, "wordCount passed.");
             ok(fix.secondsToRead === 270, "secondsToRead passed.");
             ok(fix.format() === "270", "format() passed.");
+
+            ok($('#qunit-fixture').readingStats() instanceof Object, "result is an intrinsic value");
+        });
+
+        test("readingStats returns jQuery object", function () {
+            ok(($('#qunit-fixture').readingStats({}, function () {})) instanceof jQuery,
+                "result is a jQuery object");
+
+            $('#qunit-fixture').readingStats({readingSpeed: 20}, function (stats) {
+                strictEqual(stats.wordCount, 90, "wordCount passed.");
+            });
         });
     </script>
 </body>

@@ -1,5 +1,5 @@
 (function ($) {
-    $.fn.readingStats = function (options) {
+    $.fn.readingStats = function (options, callback) {
         var defaultOptions = {
                 readingSpeed: 200, // in words per minute
                 format: function (seconds) {
@@ -21,16 +21,22 @@
         var wordCount = $.grep( $(this).text().split(' '),
                 function (el) {return (el.replace(/^\s*/, '') == "") ? false : true;}
             ).length,
-            secondsToRead = Math.ceil(wordCount / options.readingSpeed * 60);
+            secondsToRead = Math.ceil(wordCount / options.readingSpeed * 60),
+            result = {
+                wordCount: wordCount,
+                secondsToRead: secondsToRead,
 
-        return {
-            wordCount: wordCount,
-            secondsToRead: secondsToRead,
+                format: function (secs) {
+                    return options.format(secs || this.secondsToRead);
+                }
 
-            format: function (secs) {
-                return options.format(secs || this.secondsToRead);
-            }
+            };
 
+        if (callback === undefined) {
+            return result;
+        } else {
+            callback(result);
+            return this
         }
     }
 })(jQuery);
