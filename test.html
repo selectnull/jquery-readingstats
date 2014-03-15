@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>jquery.readingStats tests</title>
+    <link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.14.0.css">
+</head>
+<body>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+
+    <div class="fixtures">
+        <p id="para1">Lorem maxime soluta nulla corporis est fugit? Dolor explicabo assumenda commodi alias rerum! Reprehenderit earum neque amet incidunt facere sit totam. Perspiciatis odit autem temporibus officiis eum asperiores? Illum est.</p>
+
+        <p id="para2">
+Sit deleniti eos ipsam sit reiciendis dolores quam explicabo illo in soluta! Iste exercitationem delectus tempore facilis eligendi et a sequi incidunt incidunt animi iusto tenetur, quibusdam? Dolores optio assumenda. Adipisicing vero voluptate suscipit alias nesciunt cum repellat perspiciatis sunt explicabo iure. Dolorum error omnis laudantium nemo consequatur corporis. Optio nam a quibusdam obcaecati vero maiores. Ab sunt quisquam facilis!
+        </p>
+    </div>
+
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="jquery.readingstats.js"></script>
+    <script src="http://code.jquery.com/qunit/qunit-1.14.0.js"></script>
+    <script>
+        test("readingStats", function () {
+            var rs1 = $('#para1').readingStats();
+            ok(rs1.wordCount === 30, "wordCount passed.");
+            ok(rs1.secondsToRead === 9, "secondsToRead passed.");
+
+            var rs2 = $('#para2').readingStats({readingSpeed: 20});
+            ok(rs2.secondsToRead === 180, "secondsToRead passed.");
+
+            var fix = $('.fixtures').readingStats({
+                readingSpeed: 20,
+                format: function (secs) {
+                    return secs.toString();
+                }});
+            ok(fix.wordCount === 90, "wordCount passed.");
+            ok(fix.secondsToRead === 270, "secondsToRead passed.");
+            ok(fix.format() === "270", "format() passed.");
+        });
+    </script>
+</body>
+</html>
